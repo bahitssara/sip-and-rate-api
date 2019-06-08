@@ -2,10 +2,12 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const logger = require('./logger')
 const {CLIENT_ORIGIN} = require('./config');
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const cardRouter = require('./Users/user-router')
+const reviewRouter = require('./Reviews/reviews-router')
 
 const app = express()
 
@@ -20,18 +22,9 @@ app.use(
     })
 );
 app.use(helmet())
-// app.use(function validateBearerToken(req, res, next) {
-//     const apiToken = process.env.API_KEY
-//     const authToken = req.get('Authorization')
-  
-//     if (!authToken || authToken.split(' ')[1] !== apiToken) {
-//       logger.error(`Unauthorized request to path: ${req.path}`); 
-//       return res.status(401).json({ error: 'Unauthorized request' })
-//     }
-//     next()
-//   })
 
 app.use(cardRouter)
+app.use(reviewRouter)
 
 app.get('/', (req,res) => {
     res.send('Hello, world!')
