@@ -8,6 +8,7 @@ const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const cardRouter = require('./Users/user-router')
 const reviewRouter = require('./Reviews/reviews-router')
+const beveragesRouter = require('./Beverages/beverages-router')
 const authRouter = require('./Auth/auth-router')
 
 const app = express()
@@ -27,6 +28,8 @@ app.use(helmet())
 app.use(cardRouter)
 app.use(reviewRouter)
 app.use(authRouter)
+app.use(beveragesRouter)
+
 app.get('/', (req,res) => {
     res.send('Hello, world!')
 })
