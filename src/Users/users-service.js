@@ -4,6 +4,9 @@ const xss = require('xss')
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]/
 
 const UsersService = {
+    getAllUsers(knex) {
+        return knex.select('*').from('sip_rate_users')
+    },
     validatePassword(password) {
         if (password.length < 8) {
           return 'Password be longer than 8 characters'

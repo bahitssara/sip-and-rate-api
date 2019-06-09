@@ -10,7 +10,7 @@ const reviews = [{
     'bev_name':'Milk Stout',
     'user_review':'This beer was very good! Would have it again',
     'rating':'3',
-    'date_modified': '6/5/2019',
+    'date_created': '6/5/2019',
     'bev_id': '4',
     'user_id': '4'
 }]
