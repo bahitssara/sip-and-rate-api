@@ -9,7 +9,7 @@ const UsersService = {
     },
     validatePassword(password) {
         if (password.length < 8) {
-          return 'Password be longer than 8 characters'
+          return 'Password needs to be longer than 8 characters'
         }
         if (password.length > 72) {
           return 'Password be less than 72 characters'
@@ -36,7 +36,7 @@ const UsersService = {
               .then(([user]) => user)
       },
       hashPassword(password) {
-          return bcrypt(password, 12)
+          return bcrypt.hash(password, 12)
       },
       serializeUser(user) {
           return {
@@ -47,7 +47,16 @@ const UsersService = {
               email: xss(user.email),
               date_created: new Date(user.date_created),
           }
-      }
+      },
+      deleteUser(knex, id) {
+          return knex('sip_rate_users')
+            .where({ id })
+            .delete()
+      },
+      getById(knex, id) {
+        return knex.from('sip_rate_users').select('*').where('id', id).first()
+    },
+
 }
 
 module.exports = UsersService
