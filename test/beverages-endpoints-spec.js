@@ -2,6 +2,7 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
+
 describe('Beverages Endpoints', function() {
   let db
 
@@ -31,7 +32,7 @@ describe('Beverages Endpoints', function() {
 
     context('Given there are beverages in the database', () => {
         const testBeverages = helpers.makeBeveragesArray()
-        beforeEach('insert things', () => {
+        beforeEach('insert beverages', () => {
             return db
                 .into('sip_rate_beverages')
                 .insert(testBeverages)
@@ -46,7 +47,7 @@ describe('Beverages Endpoints', function() {
       })
     })   
 
-  describe(`GET /beverages/:bev_id`, () => {
+  describe(`GET /beverages/:id`, () => {
     context(`Given no beverages`, () => {
       it(`responds with 404`, () => {
         const bevId = 123456
@@ -55,7 +56,7 @@ describe('Beverages Endpoints', function() {
           .expect(404, { error: { message:`Beverage doesn't exist` } })
       })
     })
-  })
+  
 
     context('Given there are beverages in the database', () => {
         const testBeverages = helpers.makeBeveragesArray()
@@ -77,5 +78,46 @@ describe('Beverages Endpoints', function() {
       //     .get(`/beverages/${bevId}`)
       //     .expect(200, expectedBeverage)
       // })
+    })
+  })
+
+   describe(`POST /beverages`, () => {
+    context('Given there are beverages in the database', () => {
+      const testBeverages = helpers.makeBeveragesArray()
+      beforeEach('insert beverages', () => {
+          return db
+              .into('sip_rate_beverages')
+              .insert(testBeverages)
+      })
+    })
+
+    //  it(`creates a beverage responding with 201 and the new beverage`, () =>{
+    //    const newBeverage = {
+    //       id: 1,
+    //       bev_type: 'Bev Type 1',
+    //       bev_name: 'Test Bev 1',
+    //       description: 'Test description 1',
+    //       overall_rating: 1
+    //    }
+
+    //    return supertest(app)
+    //     .post('/beverages')
+    //     .send(newBeverage)
+    //     .expect(201)
+    //     .expect(res => {
+    //       expect(res.body.bev_type).to.eql(newBeverage.bev_type)
+    //       expect(res.body.bev_name).to.eql(newBeverage.bev_name)
+    //       expect(res.body.user_review).to.eql(newBeverage.user_review)
+    //       expect(res.body.rating).to.eql(newBeverage.rating)
+    //       expect(res.body).to.have.property('id')
+    //       expect(res.headers.location).to.eql(`/beverages/${res.body.id}`)
+    //     })
+    //     .then(res =>
+    //       supertest(app)
+    //         .get(`/beverages/${res.body.id}`)
+    //         .expect(res.body)
+    //     )
+    //  })
+
    })
 })
