@@ -38,16 +38,6 @@ const UsersService = {
       hashPassword(password) {
           return bcrypt.hash(password, 12)
       },
-      serializeUser(user) {
-          return {
-              id: user.id,
-              first_name: xss(user.first_name),
-              last_name: xss(user.last_name),
-              user_name: xss(user.user_name),
-              email: xss(user.email),
-              date_created: new Date(user.date_created),
-          }
-      },
       deleteUser(knex, id) {
           return knex('sip_rate_users')
             .where({ id })

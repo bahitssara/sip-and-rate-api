@@ -14,8 +14,7 @@ const serializeUser = user => ({
     user_name: xss(user.user_name),
     email: xss(user.email),
     date_created: new Date(user.date_created),
-})
-
+}) 
 
 usersRouter
     .route('/user')
@@ -52,7 +51,6 @@ usersRouter
     })
             
 
-
 usersRouter
     .route('/user/:id')
     .all((req, res, next) => {
@@ -79,11 +77,11 @@ usersRouter
             req.app.get('db'),
             id
         )
-            .then(numRowsAffected => {
-                logger.info(`User with id ${id} deleted`)
-                res.status(204).end()
-            })
-            .catch(next)
+        .then(numRowsAffected => {
+            logger.info(`User with id ${id} deleted`)
+            res.status(204).end()
+        })
+        .catch(next)
     })
 
 module.exports = usersRouter
