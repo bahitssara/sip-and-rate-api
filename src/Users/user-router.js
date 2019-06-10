@@ -75,6 +75,24 @@ usersRouter
     .get((req, res) => {
         res.json(serializeUser(res.user))
     })
+    .patch(jsonBodyParser, (req, res, next) => {
+        const updatedUserInfo = {...req.body, date_created: 'now()'}
+        for (const [key, value] of Object.entries(updatedUserInfo)) {
+            if (value == null)
+                return res.status(400).json({
+                error: `Missing '${key}' in request body`
+                })
+        }
+        return UsersService.updateUserInfo(
+            req.app.get('db'),
+            req.params.id,
+            updatedUserInfo
+        )
+        .then(numRowsAffected => {
+            res.status(204).end()
+        })
+        .catch(next)
+    })
     .delete((req, res, next) => {
         const { id } = req.params;
         UsersService.deleteUser(

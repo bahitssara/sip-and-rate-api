@@ -17,6 +17,11 @@ const ReviewsService = {
     getById(knex, id) {
         return knex.from('sip_rate_reviews').select('*').where('id', id).first()
     },
+    updateReview(knex, id, newReviewFields) {
+        return knex('sip_rate_reviews')
+            .where({ id })
+            .update(newReviewFields)
+    }
 }
 
 module.exports = ReviewsService

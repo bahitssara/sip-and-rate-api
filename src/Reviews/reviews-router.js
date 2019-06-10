@@ -13,7 +13,7 @@ const serializeReview = review => ({
     rating: review.rating,
     date_modified: review.date_modified,
     bev_id: review.bev_id || {},
-    user_id: review.user || {}
+    user_id: review.user_id || {}
 })
 
 reviewRouter
@@ -60,6 +60,24 @@ reviewRouter
     })
     .get((req, res) => {
         res.json(serializeReview(res.review))
+    })
+    .patch(jsonBodyParser, (req, res, next) => {
+        const updatedReview = {...req.body, date_created: 'now()'}
+        for (const [key, value] of Object.entries(updatedReview)) {
+            if (value == null)
+                return res.status(400).json({
+                error: `Missing '${key}' in request body`
+                })
+        }
+        return ReviewsService.updateReview(
+            req.app.get('db'),
+            req.params.id,
+            updatedReview
+        )
+        .then(numRowsAffected => {
+            res.status(204).end()
+        })
+        .catch(next)
     })
     .delete((req, res, next) => {
         const { id } = req.params;
