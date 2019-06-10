@@ -49,29 +49,29 @@ function makeBeveragesArray() {
       bev_type: 'Bev Type 1',
       bev_name: 'Test Bev 1',
       description: 'Test description 1',
-      overall_rating: '1'
+      overall_rating: 1
     },
     {
-        id: 2,
-        bev_type: 'Bev Type 2',
-        bev_name: 'Test Bev 2',
-        description: 'Test description 2',
-        overall_rating: '2'
-      },
-      {
-        id: 3,
-        bev_type: 'Bev Type 3',
-        bev_name: 'Test Bev 3',
-        description: 'Test description 3',
-        overall_rating: '3'
-      },
-      {
-        id: 4,
-        bev_type: 'Bev Type 4',
-        bev_name: 'Test Bev 4',
-        description: 'Test description 4',
-        overall_rating: '4'
-      },
+      id: 2,
+      bev_type: 'Bev Type 2',
+      bev_name: 'Test Bev 2',
+      description: 'Test description 2',
+      overall_rating: 2
+    },
+    {
+      id: 3,
+      bev_type: 'Bev Type 3',
+      bev_name: 'Test Bev 3',
+      description: 'Test description 3',
+      overall_rating: 3
+    },
+    {
+      id: 4,
+      bev_type: 'Bev Type 4',
+      bev_name: 'Test Bev 4',
+      description: 'Test description 4',
+      overall_rating: 4
+    },
   ]
 }
 
@@ -150,15 +150,9 @@ function makeReviewsArray(users, beverages) {
   ];
 }
 
-function makeExpectedBeverage(users, beverage, reviews=[]) {
-  const user = users
-    .find(user => user.id === beverage.user_id)
+function makeExpectedBeverage(beverage) {
 
-  const beverageReviews = reviews
-    .filter(review => review.bev_id === beverage.id)
-
-  const number_of_reviews = beverageReviews.length
-  const average_review_rating = calculateAverageReviewRating(beverageReviews)
+  // const average_review_rating = calculateAverageReviewRating(beverageReviews)
 
   return {
     id: beverage.id,
@@ -166,27 +160,19 @@ function makeExpectedBeverage(users, beverage, reviews=[]) {
     bev_name: beverage.bev_name,
     user_review: beverage.user_review,
     date_created: beverage.date_created,
-    number_of_reviews,
-    average_review_rating,
-        user: {
-        id: user.id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        user_name: user.user_name,
-        date_created: user.date_created,
-        },
+    overall_rating: beverage.overall_rating
   }
 }
 
-function calculateAverageReviewRating(reviews) {
-  if(!reviews.length) return 0
+// function calculateAverageReviewRating(reviews) {
+//   if(!reviews.length) return 0
 
-  const sum = reviews
-    .map(review => review.rating)
-    .reduce((a, b) => ab)
+//   const sum = reviews
+//     .map(review => review.rating)
+//     .reduce(sum)
 
-  return Math.round(sum / reviews.length)
-}
+//   return Math.round(sum / reviews.length)
+// }
 
 function makeExpectedBeverageReviews(users, bevId, reviews) {
   const expectedReviews = reviews
@@ -202,9 +188,10 @@ function makeExpectedBeverageReviews(users, bevId, reviews) {
         date_created: beverage.date_created,
       user: {
         id: reviewUser.id,
+        first_name: reviewUser.first_name,
+        last_name: reviewUser.last_name,
+        email: reviewUser.email,
         user_name: reviewUser.user_name,
-        full_name: reviewUser.full_name,
-        nickname: reviewUser.nickname,
         date_created: reviewUser.date_created,
       }
     }
@@ -248,7 +235,7 @@ function seedBeveragesTables(db, users, beverages, reviews=[]) {
     await seedUsers(trx, users)   
     await trx.into('sip_rate_beverages').insert(beverages)
     await trx.raw(
-       `SELECT setval('thingful_beverages_id_seq', ?)`,
+       `SELECT setval('sip_rate_beverages_id_seq', ?)`,
        [beverages[beverages.length - 1].id],
      )   
   })
