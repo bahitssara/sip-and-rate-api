@@ -121,9 +121,6 @@ function makeReviewsArray() {
 }
 
 function makeExpectedBeverage(beverage) {
-
-  // const average_review_rating = calculateAverageReviewRating(beverageReviews)
-
   return {
     id: beverage.id,
     bev_type: beverage.bev_type,
@@ -134,15 +131,7 @@ function makeExpectedBeverage(beverage) {
   }
 }
 
-// function calculateAverageReviewRating(reviews) {
-//   if(!reviews.length) return 0
 
-//   const sum = reviews
-//     .map(review => review.rating)
-//     .reduce(sum)
-
-//   return Math.round(sum / reviews.length)
-// }
 
 function makeExpectedBeverageReviews(users, bevId, reviews) {
   const expectedReviews = reviews
@@ -200,9 +189,8 @@ function seedUsers(db, users) {
     )
 }
 
-function seedBeveragesTables(db, users, beverages, reviews=[]) {
+function seedBeveragesTables(db, beverages) {
   return db.transaction(async trx => {
-    await seedUsers(trx, users)   
     await trx.into('sip_rate_beverages').insert(beverages)
     await trx.raw(
        `SELECT setval('sip_rate_beverages_id_seq', ?)`,
@@ -211,14 +199,6 @@ function seedBeveragesTables(db, users, beverages, reviews=[]) {
   })
 
 }
-
-// function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-//    const token = jwt.sign({ user_id: user.id }, secret, {
-//        subject: user.user_name,
-//        algorithm: 'HS256',
-//    })
-//    return `Bearer ${token}`
-// }
   
 
 module.exports = {
@@ -231,7 +211,6 @@ module.exports = {
   makeFixtures,
   cleanTables,
   seedBeveragesTables,
-//   makeAuthHeader,
   seedUsers
 }
 

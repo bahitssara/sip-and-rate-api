@@ -10,8 +10,8 @@ const serializeReview = review => ({
     id: review.id,
     bev_name: xss(review.bev_name), 
     user_review: xss(review.user_review),
-    rating: rating.user_review,
-    date_modified: rating.date_modified,
+    rating: review.rating,
+    date_modified: review.date_modified,
     bev_id: review.bev_id || {},
     user_id: review.user || {}
 })

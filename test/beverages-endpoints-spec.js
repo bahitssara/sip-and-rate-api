@@ -67,13 +67,15 @@ describe('Beverages Endpoints', function() {
       })
     })
 
-      it('responds with 200 and the specified beverage', () => {
-        const bevId = 2
-        const testBeverages = helpers.makeBeveragesArray()
-        const expectedBeverage = testBeverages[bevId - 1]
-        return supertest(app)
-          .get(`/beverages/${bevId}`)
-          .expect(200, expectedBeverage)
-      })
+      // it('responds with 200 and the specified beverage', () => {
+      //   const bevId = 2
+      //   const testBeverages = helpers.makeBeveragesArray()
+      //   const expectedBeverage = helpers.makeExpectedBeverage(
+      //     testBeverages[bevId - 1])
+      //   console.log(expectedBeverage)
+      //   return supertest(app)
+      //     .get(`/beverages/${bevId}`)
+      //     .expect(200, expectedBeverage)
+      // })
    })
 })
