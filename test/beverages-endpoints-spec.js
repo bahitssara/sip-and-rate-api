@@ -5,17 +5,6 @@ const helpers = require('./test-helpers')
 describe.only('Beverages Endpoints', function() {
   let db
 
-  const {
-    testUsers,
-    testBeverages,
-    testReviews,
-  } = helpers.makeFixtures()
-
-//   function makeAuthHeader(user) {
-//     const token = Buffer.from(`${user.user_name}:${user.password}`).toString('base64')
-//     return `Basic ${token}`
-//   }
-
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
@@ -30,196 +19,62 @@ describe.only('Beverages Endpoints', function() {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-//   describe(`Protected endpoints`, () => {
-//     beforeEach('insert things', () => 
-//       helpers.seedBeveragesTables(
-//         db, 
-//         testUsers,
-//         testBeverages,
-//         testReviews,
-//       )
-//     )
 
-//     const protectedEndpoints = [
-//         {
-//           name: 'GET /beverages/:bev_id',
-//           path: '/beverages/1'
-//         },
-//         {
-//           name: 'GET /beverages/:bev_id/beverages',
-//           path: '/beverages/1/beverages'
-//         },
-//       ]
-
-//       protectedEndpoints.forEach(endpoint => {
-//       describe(endpoint.name, () => {
-        // it(`responds with 401 'Missing basic token' when no basic token`, () => {
-        //   return supertest(app)
-        //     .get(endpoint.path)
-        //     .expect(401, { error: `Unauthorized request` })
-        // })
-
-        // it(`responds 401 'Unauthorized request' when no credentials in token`, () => {
-        //   const validUser = testUsers[0]
-        //   const invalidSecret = 'bad-secret'
-        //   return supertest(app)
-        //     .get(`/api/things/123`)
-        //     .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
-        //     .expect(401, { error: `Unauthorized request` })
-        // })
-
-        // it(`responds 401 'Unauthorized request' when invalid user`, () => {
-        //   const userInvalidCreds = { user_name: 'user-not', password: 'existy' }
-        //   return supertest(app)
-        //     .get(endpoint.path)
-        //     .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
-        //     .expect(401, { error: `Unauthorized request` })
-        // })
-
-//         it(`responds 401 'Unauthorized request' when invalid password`, () => {
-//             const userInvalidPass = { user_name: testUsers[0].user_name, password: 'wrong' }
-//             return supertest(app)
-//               .get(endpoint.path)
-//               .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
-//               .expect(401, { error: `Unauthorized request` })
-//           })
-          
-//       })
-//     })
- //  })
-
-  describe(`GET /api/things`, () => {
-    context(`Given no things`, () => {
+  describe(`GET /beverages`, () => {
+    context(`Given no beverages`, () => {
       it(`responds with 200 and an empty list`, () => {
         return supertest(app)
           .get('/beverages')
-        //   .set('Authorization', makeAuthHeader(testUsers[0]))
           .expect(200, [])
       })
     })
 
     context('Given there are things in the database', () => {
-      beforeEach('insert things', () =>
-        helpers.seedBeveragesTables(
-          db,
-          testUsers,
-          testBeverages,
-          testReviews,
-        )
-      )
+        const testBeverages = helpers.makeBeveragesArray()
+      beforeEach('insert things', () => {
+        return db
+            .into('sip_rate_beverages')
+            .insert(testBeverages)
+      })
 
-      it('responds with 200 and all of the things', () => {
+      it('responds with 200 and all of the beverages', () => {
         const expectedBeverage = helpers.makeBeveragesArray()
         
         return supertest(app)
           .get('/beverages')
-        //   .set('Authorization', makeAuthHeader(testUsers[0]))
           .expect(200, expectedBeverage)
       })
     })   
 
-//   describe(`GET /api/things/:thing_id`, () => {
-//     context(`Given no things`, () => {
-//       beforeEach(() =>
-//         helpers.seedUsers(db, testUsers)
-//       )
-//       it(`responds with 404`, () => {
-//         const thingId = 123456
-//         return supertest(app)
-//           .get(`/api/things/${thingId}`)
-//           .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
-//           .expect(404, { error: `Thing doesn't exist` })
-//       })
-//     })
+  describe(`GET /beverages/:bev_id`, () => {
+    context(`Given no beverages`, () => {
+      it(`responds with 404`, () => {
+        const bevId = 123456
+        return supertest(app)
+          .get(`/beverages/${bevId}`)
+          .expect(404, { error: { message:`Beverage doesn't exist` } })
+      })
+    })
+  })
 
-//     context('Given there are things in the database', () => {
-//       beforeEach('insert things', () =>
-//         helpers.seedThingsTables(
-//           db,
-//           testUsers,
-//           testThings,
-//           testReviews,
-//         )
-//       )
+    context('Given there are beverages in the database', () => {
+        const testBeverages = helpers.makeBeveragesArray()
 
-//       it('responds with 200 and the specified thing', () => {
-//         const thingId = 2
-//         const expectedThing = helpers.makeExpectedThing(
-//           testUsers,
-//           testThings[thingId - 1],
-//           testReviews,
-//         )
+      beforeEach('insert beverages', () =>{
+        return db
+            .into('sip_rate_beverages')
+            .insert(testBeverages)
+      })
+    })
 
-//         return supertest(app)
-//           .get(`/api/things/${thingId}`)
-//           .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
-//           .expect(200, expectedThing)
-//       })
-//     })
-
-//     context(`Given an XSS attack thing`, () => {
-//       const testUser = helpers.makeUsersArray()[1]
-//       const {
-//         maliciousThing,
-//         expectedThing,
-//       } = helpers.makeMaliciousThing(testUser)
-
-//       beforeEach('insert malicious thing', () => {
-//         return helpers.seedMaliciousThing(
-//           db,
-//           testUser,
-//           maliciousThing,
-//         )
-//       })
-
-//       it('removes XSS attack content', () => {
-//         return supertest(app)
-//           .get(`/api/things/${maliciousThing.id}`)
-//           .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
-//           .expect(200)
-//           .expect(res => {
-//             expect(res.body.title).to.eql(expectedThing.title)
-//             expect(res.body.content).to.eql(expectedThing.content)
-//           })
-//       })
-//     })
-//   })
-
-//   describe(`GET /api/things/:thing_id/reviews`, () => {
-//     context(`Given no things`, () => {
-//       beforeEach(() =>
-//         helpers.seedUsers(db, testUsers)
-//       )
-//       it(`responds with 404`, () => {
-//         const thingId = 123456
-//         return supertest(app)
-//           .get(`/api/things/${thingId}/reviews`)
-//           .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
-//           .expect(404, { error: `Thing doesn't exist` })
-//       })
-//     })
-
-//     context('Given there are reviews for thing in the database', () => {
-//       beforeEach('insert things', () =>
-//         helpers.seedThingsTables(
-//           db,
-//           testUsers,
-//           testThings,
-//           testReviews,
-//         )
-//       )
-
-//       it('responds with 200 and the specified reviews', () => {
-//         const thingId = 1
-//         const expectedReviews = helpers.makeExpectedThingReviews(
-//           testUsers, thingId, testReviews
-//         )
-
-//         return supertest(app)
-//           .get(`/api/things/${thingId}/reviews`)
-//           .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
-//           .expect(200, expectedReviews)
-//       })
-  //  })
+      it('responds with 200 and the specified beverage', () => {
+        const bevId = 2
+        const testBeverages = helpers.makeBeveragesArray()
+        const expectedBeverage = testBeverages[bevId - 1]
+        console.log(expectedBeverage)
+        return supertest(app)
+          .get(`/beverages/${bevId}`)
+          .expect(200, expectedBeverage)
+      })
    })
- })
+})

@@ -72,7 +72,7 @@ function makeBeveragesArray() {
       description: 'Test description 4',
       overall_rating: 4
     },
-  ]
+  ];
 }
 
 function makeReviewsArray(users, beverages) {
@@ -200,7 +200,7 @@ function makeExpectedBeverageReviews(users, bevId, reviews) {
 
 function makeFixtures() {
   const testUsers = makeUsersArray()
-  const testBeverages = makeBeveragesArray(testUsers)
+  const testBeverages = makeBeveragesArray()
   const testReviews = makeReviewsArray(testUsers, testBeverages)
   return { testUsers, testBeverages, testReviews }
 }

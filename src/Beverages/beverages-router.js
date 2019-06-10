@@ -6,7 +6,7 @@ const beveragesRouter = express.Router()
 const jsonBodyParser = express.json()
 
 const serializeBeverage = beverage => ({
-    id: 1,
+    id: beverage.id,
     bev_type: beverage.bev_type,
     bev_name: beverage.bev_name,
     description: beverage.description,
@@ -33,7 +33,10 @@ beveragesRouter
         return BeveragesService
             .insertBeverages(req.app.get('db'), newBeverage)
                 .then(newBeverage => {
-                    res.json(newBeverage).status(201)
+                    res
+                    .status(201)
+                    .location(`/beverages/${beverage.id}`)
+                    .json(newBeverage)
                 })
                 .catch(next)
     })
@@ -56,7 +59,9 @@ beveragesRouter
             .catch(next)
     })
     .get((req, res) => {
-        res.json(serializeBeverage(res.beverage))        
+        return res
+        .status(200)
+        .json(serializeBeverage(res.beverage))       
     })
     .delete((req, res, next) => {
         const { id } = req.params;
