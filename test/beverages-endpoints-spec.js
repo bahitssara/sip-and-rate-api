@@ -2,7 +2,7 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe.only('Beverages Endpoints', function() {
+describe('Beverages Endpoints', function() {
   let db
 
   before('make knex instance', () => {
@@ -29,13 +29,13 @@ describe.only('Beverages Endpoints', function() {
       })
     })
 
-    context('Given there are things in the database', () => {
+    context('Given there are beverages in the database', () => {
         const testBeverages = helpers.makeBeveragesArray()
-      beforeEach('insert things', () => {
-        return db
-            .into('sip_rate_beverages')
-            .insert(testBeverages)
-      })
+        beforeEach('insert things', () => {
+            return db
+                .into('sip_rate_beverages')
+                .insert(testBeverages)
+        })
 
       it('responds with 200 and all of the beverages', () => {
         const expectedBeverage = helpers.makeBeveragesArray()
@@ -71,7 +71,6 @@ describe.only('Beverages Endpoints', function() {
         const bevId = 2
         const testBeverages = helpers.makeBeveragesArray()
         const expectedBeverage = testBeverages[bevId - 1]
-        console.log(expectedBeverage)
         return supertest(app)
           .get(`/beverages/${bevId}`)
           .expect(200, expectedBeverage)

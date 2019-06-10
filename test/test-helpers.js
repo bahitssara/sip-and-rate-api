@@ -75,7 +75,7 @@ function makeBeveragesArray() {
   ];
 }
 
-function makeReviewsArray(users, beverages) {
+function makeReviewsArray() {
   return [
     {
       id: 1,
@@ -83,8 +83,8 @@ function makeReviewsArray(users, beverages) {
       bev_name:'test name',
       user_review: 'First test review!',
       rating: 2,
-      bev_id: beverages[0].id,
-      user_id: users[0].id,
+      bev_id: 1,
+      user_id: 1,
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
@@ -93,8 +93,8 @@ function makeReviewsArray(users, beverages) {
       bev_name:'test name',
       user_review: 'Second test review!',
       rating: 3,
-      bev_id: beverages[0].id,
-      user_id: users[1].id,
+      bev_id: 2,
+      user_id: 2,
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
@@ -103,8 +103,8 @@ function makeReviewsArray(users, beverages) {
       bev_name:'test name',
       user_review: 'Third test review!',
       rating: 1,
-      bev_id: beverages[0].id,
-      user_id: users[2].id,
+      bev_id: 3,
+      user_id: 3,
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
@@ -113,38 +113,8 @@ function makeReviewsArray(users, beverages) {
       bev_name:'test name',
       user_review: 'Fourth test review!',
       rating: 5,
-      bev_id: beverages[0].id,
-      user_id: users[3].id,
-      date_created: '2029-01-22T16:28:32.615Z',
-    },
-    {
-      id: 5,
-      bev_type: 'test type',
-      bev_name:'test name',
-      user_review: 'Fifth test review!',
-      rating: 1,
-      bev_id: beverages[beverages.length - 1].id,
-      user_id: users[0].id,
-      date_created: '2029-01-22T16:28:32.615Z',
-    },
-    {
-      id: 6,
-      bev_type: 'test type',
-      bev_name:'test name',
-      user_review: 'Sixth test review!',
-      rating: 2,
-      bev_id: beverages[beverages.length - 1].id,
-      user_id: users[2].id,
-      date_created: '2029-01-22T16:28:32.615Z',
-    },
-    {
-      id: 7,
-      bev_type: 'test type',
-      bev_name:'test name',
-      user_review: 'Seventh test review!',
-      rating: 5,
-      bev_id: beverages[3].id,
-      user_id: users[0].id,
+      bev_id: 4,
+      user_id: 4,
       date_created: '2029-01-22T16:28:32.615Z',
     },
   ];
