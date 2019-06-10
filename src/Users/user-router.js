@@ -42,11 +42,15 @@ usersRouter
         }
         newUser.password = UsersService.hashPassword(newUser.password)
                                 .then(hashedPassword => hashedPassword)
+                                
         return UsersService
                     .insertUser(req.app.get('db'), newUser)
                         .then(newUser => {
-                            res.json(newUser)
+                            res
+                            .status(201)
+                            .json(newUser)
                         })
+                        
                         .catch(next)
     })
             
