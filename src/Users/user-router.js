@@ -48,9 +48,9 @@ usersRouter
                         .then(newUser => {
                             res
                             .status(201)
+                            .location(path.posix.join(req.originalUrl, `/${newUser.id}`))
                             .json(newUser)
                         })
-                        
                         .catch(next)
     })
             

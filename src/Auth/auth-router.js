@@ -1,20 +1,12 @@
 const express = require('express')
 const AuthService= require('./auth-service')
-const requireAuth = require('../middleware/basic-auth')
+const {requireAuth} = require('../middleware/basic-auth')
 
 const authRouter = express.Router()
 const jsonBodyParser = express.json()
 
-const users = [{
-    'email': 'dragonssarecool@email.com',
-    'password':'dragonlover'
-}]
-
 authRouter 
     .route('/login')
-    .get((req, res) => {
-        res.json(users)
-    })
     .post(jsonBodyParser, (req, res, next) => {
         const { email, password } = req.body
         const loginUser = { email, password }
@@ -25,7 +17,7 @@ authRouter
                 error: `Missing '${key}' in request body`
             })
 
-        AuthService.getUserWithUserName(
+        AuthService.getUserWithEmail(
             req.app.get('db'),
             loginUser.email
         )
@@ -37,11 +29,11 @@ authRouter
                 
                     return AuthService.comparePasswords(loginUser.password, dbUser.password)
                         .then(compareMatch => {
-                           if (!compareMatch)
+                           if (compareMatch)
                              return res.status(400).json({
                                error: 'Incorrect email or password',
                              })
-                
+                             
                              const sub = dbUser.email
                              const payload = { user_id: dbUser.id }
                              res.send({
@@ -50,10 +42,15 @@ authRouter
                          })
                 })
                 .catch(next)
-        
           })
 
-        
+        authRouter.post('/refresh', requireAuth, (req, res) => {
+        const sub = req.user.user_name
+        const payload = { user_id: req.user.id }
+        res.send({
+            authToken: AuthService.createJwt(sub, payload),
+    })
+})
 
 
 module.exports = authRouter
