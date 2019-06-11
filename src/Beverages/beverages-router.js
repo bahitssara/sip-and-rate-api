@@ -14,7 +14,7 @@ const serializeBeverage = beverage => ({
 })
 
 beveragesRouter   
-    .route('/beverages')
+    .route('/beverages') 
     .get((req,res, next) => {
         BeveragesService.getAllBeverages(req.app.get('db'))
             .then(beverage => {
