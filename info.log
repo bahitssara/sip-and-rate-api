@@ -137,3 +137,6 @@
 {"message":"User with id 29 deleted","level":"info"}
 {"message":"User with id 31 deleted","level":"info"}
 {"message":"User with id 33 deleted","level":"info"}
+{"message":"Beverage with 123456 doesn't exist","level":"info"}
+{"message":"Beverage with 123456 doesn't exist","level":"info"}
+{"message":"Beverage with 123456 doesn't exist","level":"info"}
