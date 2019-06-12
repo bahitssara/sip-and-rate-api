@@ -40,9 +40,9 @@ usersRouter
         if (passwordError) {
             return res.status(400).json({ error: passwordError })
         }
-        newUser.password = UsersService.hashPassword(newUser.password)
-            .then(hashedPassword => hashedPassword)
-            .catch(next)
+        // newUser.password = UsersService.hashPassword(newUser.password)
+        //     .then(hashedPassword => hashedPassword)
+        //     .catch(next)
 
         return UsersService
             .insertUser(req.app.get('db'), newUser)
