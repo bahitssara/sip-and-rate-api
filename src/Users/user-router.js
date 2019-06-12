@@ -14,7 +14,7 @@ const serializeUser = user => ({
     user_name: xss(user.user_name),
     email: xss(user.email),
     date_created: new Date(user.date_created),
-}) 
+})
 
 usersRouter
     .route('/user')
@@ -27,8 +27,8 @@ usersRouter
     })
 
     .post(jsonBodyParser, (req, res, next) => {
-        const newUser = {...req.body, date_created: 'now()'}
-        for (const field of ['first_name', 'last_name', 'user_name', 'email', 'password']) {
+        const newUser = { ...req.body, date_created: 'now()' }
+        for (const field of ['first_name', 'last_name', 'email', 'password']) {
             if (!req.body[field]) {
                 return res.status(400).json({
                     error: `Missing '${field}' in request body`
@@ -41,19 +41,20 @@ usersRouter
             return res.status(400).json({ error: passwordError })
         }
         newUser.password = UsersService.hashPassword(newUser.password)
-                                .then(hashedPassword => hashedPassword)
-                                
+            .then(hashedPassword => hashedPassword)
+            .catch(next)
+
         return UsersService
-                    .insertUser(req.app.get('db'), newUser)
-                        .then(newUser => {
-                            res
-                            .status(201)
-                            .location(path.posix.join(req.originalUrl, `/${newUser.id}`))
-                            .json(newUser)
-                        })
-                        .catch(next)
+            .insertUser(req.app.get('db'), newUser)
+            .then(newUser => {
+                res
+                    .status(201)
+                    .location(path.posix.join(req.originalUrl, `/${newUser.id}`))
+                    .json(newUser)
+            })
+            .catch(next)
     })
-            
+
 
 usersRouter
     .route('/user/:id')
@@ -76,11 +77,11 @@ usersRouter
         res.json(serializeUser(res.user))
     })
     .patch(jsonBodyParser, (req, res, next) => {
-        const updatedUserInfo = {...req.body, date_created: 'now()'}
+        const updatedUserInfo = { ...req.body, date_created: 'now()' }
         for (const [key, value] of Object.entries(updatedUserInfo)) {
             if (value == null)
                 return res.status(400).json({
-                error: `Missing '${key}' in request body`
+                    error: `Missing '${key}' in request body`
                 })
         }
         return UsersService.updateUserInfo(
@@ -88,10 +89,10 @@ usersRouter
             req.params.id,
             updatedUserInfo
         )
-        .then(numRowsAffected => {
-            res.status(204).end()
-        })
-        .catch(next)
+            .then(numRowsAffected => {
+                res.status(204).end()
+            })
+            .catch(next)
     })
     .delete((req, res, next) => {
         const { id } = req.params;
@@ -99,11 +100,11 @@ usersRouter
             req.app.get('db'),
             id
         )
-        .then(numRowsAffected => {
-            logger.info(`User with id ${id} deleted`)
-            res.status(204).end()
-        })
-        .catch(next)
+            .then(numRowsAffected => {
+                logger.info(`User with id ${id} deleted`)
+                res.status(204).end()
+            })
+            .catch(next)
     })
 
 module.exports = usersRouter

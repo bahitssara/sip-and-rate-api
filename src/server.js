@@ -57,17 +57,19 @@ app.get('/beverages-api-data/:search', (req, res) => {
                     bev_type: newWine.wines[i].type,
                     bev_name: newWine.wines[i].name,
                     description: newWine.wines[i].varietal,
-                    overall_rating: newWine.wines[i].snoothrank
+                    overall_rating: newWine.wines[i].snoothrank,
+                    bev_code: newWine.wines[i].code
                 }
             }
     BeveragesService.insertBeverages(req.app.get('db'), dbSaveWine)
             .then(newWine => {
+                console.log(newWine)
                 res.status(201).json(newWine)
             })
             .catch(err => {
                 console.log(err);
             });
-            res.json(newWine.wines)
+            res.json(newWine.wines[0].code)
     });
 
 //error handling

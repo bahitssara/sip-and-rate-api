@@ -3,12 +3,14 @@ const BeveragesService = {
         return knex.select('*').from('sip_rate_beverages')
     },
     
-    insertBeverages(db, newUser) {
+    insertBeverages(db, newWine) {
         return db
-            .insert(newUser)
+            .insert(newWine)
             .into('sip_rate_beverages')
             .returning('*')
-            .then(([beverages]) => beverages)
+            .then(rows => {
+                return rows[0]
+            })
     },
     deleteBeverages(knex, id) {
         return knex('sip_rate_beverages')
