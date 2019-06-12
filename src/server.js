@@ -78,6 +78,6 @@ app.get('/beverages-api-data/:search', (req, res) => {
     });
 })
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT, () => {
     console.log(`Sever is listening at http://localhost:${PORT}`)
 })
