@@ -167,9 +167,11 @@ describe('Users Endpoints', function() {
                               // expect(actualDate).to.eql(expectedDate)
 
                               return bcrypt.compare(newUser.password, row.password)
+              
                             })
                             .then(compareMatch => {
-                                expect(compareMatch).to.be.false
+                              console.log(compareMatch)
+                                expect(compareMatch).to.be.true
                             })
                           )
                 })
