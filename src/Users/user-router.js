@@ -13,6 +13,7 @@ const serializeUser = user => ({
     last_name: xss(user.last_name),
     user_name: xss(user.user_name),
     email: xss(user.email),
+    password: user.password,
     date_created: new Date(user.date_created),
 })
 
@@ -41,7 +42,8 @@ usersRouter
             return res.status(400).json({ error: passwordError })
         }
         // newUser.password = UsersService.hashPassword(newUser.password)
-        //     .then(hashedPassword => hashedPassword)
+        //     .then(hashedPassword => {
+        //         hashedPassword.password})
         //     .catch(next)
 
         return UsersService
@@ -50,7 +52,7 @@ usersRouter
                 res
                     .status(201)
                     .location(path.posix.join(req.originalUrl, `/${newUser.id}`))
-                    .json(newUser)
+                    .json(serializeUser(newUser))
             })
             .catch(next)
     })

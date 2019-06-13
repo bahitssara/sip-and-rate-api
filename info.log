@@ -144,3 +144,13 @@
 {"message":"User with id 2 deleted","level":"info"}
 {"message":"User with id 3 deleted","level":"info"}
 {"message":"User with id 4 deleted","level":"info"}
+{"message":"User with id 5 deleted","level":"info"}
+{"message":"User with id:5 doesn't exist","level":"info"}
+{"message":"User with id:6 doesn't exist","level":"info"}
+{"message":"User with id 7 deleted","level":"info"}
+{"message":"User with id 8 deleted","level":"info"}
+{"message":"User with id:9 doesn't exist","level":"info"}
+{"message":"User with id:10 doesn't exist","level":"info"}
+{"message":"User with id:8 doesn't exist","level":"info"}
+{"message":"User with id:8 doesn't exist","level":"info"}
+{"message":"User with id 9 deleted","level":"info"}
