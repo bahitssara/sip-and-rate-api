@@ -2,7 +2,7 @@ const express = require('express')
 const ReviewsService = require('./reviews-service')
 const xss = require('xss')
 const logger = require('../logger')
-const { requireAuth } = require('../middleware/basic-auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const reviewRouter = express.Router()
 const jsonBodyParser = express.json()

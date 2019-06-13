@@ -1,7 +1,7 @@
 const express = require('express')
 const BeveragesService = require('./beverages-service')
 const logger = require('../logger')
-const { requireAuth } = require('../middleware/basic-auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const beveragesRouter = express.Router()
 const jsonBodyParser = express.json()
