@@ -1,6 +1,7 @@
 const express = require('express')
 const BeveragesService = require('./beverages-service')
 const logger = require('../logger')
+const { requireAuth } = require('../middleware/basic-auth')
 
 const beveragesRouter = express.Router()
 const jsonBodyParser = express.json()
@@ -15,14 +16,14 @@ const serializeBeverage = beverage => ({
 
 beveragesRouter   
     .route('/beverages') 
-    .get((req,res, next) => {
+    .get(requireAuth, (req,res, next) => {
         BeveragesService.getAllBeverages(req.app.get('db'))
             .then(beverage => {
                 res.json(beverage.map(serializeBeverage))
             })
             .catch(next)
     })
-    .post(jsonBodyParser, (req, res, next) => {
+    .post(requireAuth, jsonBodyParser, (req, res, next) => {
         const newBeverage = {...req.body}
         
         for (const [key, value] of Object.entries(newBeverage))

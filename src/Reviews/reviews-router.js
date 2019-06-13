@@ -2,6 +2,7 @@ const express = require('express')
 const ReviewsService = require('./reviews-service')
 const xss = require('xss')
 const logger = require('../logger')
+const { requireAuth } = require('../middleware/basic-auth')
 
 const reviewRouter = express.Router()
 const jsonBodyParser = express.json()
@@ -18,14 +19,14 @@ const serializeReview = review => ({
 
 reviewRouter
     .route('/reviews')
-    .get((req, res, next) => {
+    .get(requireAuth, (req, res, next) => {
         ReviewsService.getAllReviews(req.app.get('db'))
             .then(review => {
                 res.json(review.map(serializeReview))
             })
             .catch(next)
     })
-    .post(jsonBodyParser, (req, res, next) => {
+    .post(requireAuth, jsonBodyParser, (req, res, next) => {
         const newReview = {...req.body, date_created: 'now()'}
 
         for (const [key, value] of Object.entries(newReview)) {
@@ -61,7 +62,7 @@ reviewRouter
     .get((req, res) => {
         res.json(serializeReview(res.review))
     })
-    .patch(jsonBodyParser, (req, res, next) => {
+    .patch(requireAuth, jsonBodyParser, (req, res, next) => {
         const updatedReview = {...req.body, date_created: 'now()'}
         for (const [key, value] of Object.entries(updatedReview)) {
             if (value == null)
