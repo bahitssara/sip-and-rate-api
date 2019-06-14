@@ -154,3 +154,9 @@
 {"message":"User with id:8 doesn't exist","level":"info"}
 {"message":"User with id:8 doesn't exist","level":"info"}
 {"message":"User with id 9 deleted","level":"info"}
+{"message":"User with id 10 deleted","level":"info"}
+{"message":"User with id 11 deleted","level":"info"}
+{"message":"User with id 12 deleted","level":"info"}
+{"message":"User with id:13 doesn't exist","level":"info"}
+{"message":"User with id 14 deleted","level":"info"}
+{"message":"Beverage with 123456 doesn't exist","level":"info"}

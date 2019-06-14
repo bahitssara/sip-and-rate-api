@@ -26,10 +26,11 @@ authRouter
                     return res.status(400).json({
                         error: 'Incorrect email',
                     })
+                    .catch(next)
 
-                return AuthService.comparePasswords(loginUser.password, dbUser.password)
+                 return AuthService.comparePasswords(loginUser.password, dbUser.password)
                     .then(compareMatch => {
-                        if (compareMatch)
+                        if (!compareMatch)
                             return res.status(400).json({
                                 error: 'Incorrect password',
                             })
@@ -40,8 +41,8 @@ authRouter
                             authToken: AuthService.createJwt(sub, payload)
                         })
                     })
+                    .catch(next)
             })
-            .catch(next)
     })
 
 authRouter.post('/refresh', requireAuth, (req, res) => {
