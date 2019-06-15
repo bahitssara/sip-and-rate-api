@@ -16,7 +16,7 @@ const serializeBeverage = beverage => ({
 
 beveragesRouter   
     .route('/beverages') 
-    .get(requireAuth, (req,res, next) => {
+    .get((req,res, next) => {
         BeveragesService.getAllBeverages(req.app.get('db'))
             .then(beverage => {
                 res.json(beverage.map(serializeBeverage))
@@ -44,7 +44,7 @@ beveragesRouter
 
 beveragesRouter
     .route('/beverages/:id')
-    .all((req, res, next) => {
+    .all(requireAuth, (req, res, next) => {
         const { id } = req.params;
         BeveragesService.getById(req.app.get('db'), id)
             .then(beverage => {

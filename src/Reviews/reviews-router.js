@@ -59,7 +59,7 @@ reviewRouter
             })
             .catch(next)
     })
-    .get((req, res) => {
+    .get(requireAuth, (req, res) => {
         res.json(serializeReview(res.review))
     })
     .patch(requireAuth, jsonBodyParser, (req, res, next) => {
