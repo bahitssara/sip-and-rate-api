@@ -69,7 +69,7 @@ app.get('/beverages-api-data/:search', (req, res) => {
             .catch(err => {
                 console.log(err);
             });
-            res.json(newWine.wines[0].code)
+            res.json(newWine.wines)
     });
 
 //error handling
