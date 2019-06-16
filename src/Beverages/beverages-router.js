@@ -11,7 +11,8 @@ const serializeBeverage = beverage => ({
     bev_type: beverage.bev_type,
     bev_name: beverage.bev_name,
     description: beverage.description,
-    overall_rating: beverage.overall_rating
+    overall_rating: beverage.overall_rating,
+    bev_code: beverage.bev_code
 })
 
 beveragesRouter   
@@ -23,7 +24,7 @@ beveragesRouter
             })
             .catch(next)
     })
-    .post(requireAuth, jsonBodyParser, (req, res, next) => {
+    .post(jsonBodyParser, (req, res, next) => {
         const newBeverage = {...req.body}
         
         for (const [key, value] of Object.entries(newBeverage))
@@ -44,7 +45,7 @@ beveragesRouter
 
 beveragesRouter
     .route('/beverages/:id')
-    .all(requireAuth, (req, res, next) => {
+    .all((req, res, next) => {
         const { id } = req.params;
         BeveragesService.getById(req.app.get('db'), id)
             .then(beverage => {

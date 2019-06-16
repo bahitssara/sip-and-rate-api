@@ -19,14 +19,14 @@ const serializeReview = review => ({
 
 reviewRouter
     .route('/reviews')
-    .get(requireAuth, (req, res, next) => {
+    .get((req, res, next) => {
         ReviewsService.getAllReviews(req.app.get('db'))
             .then(review => {
                 res.json(review.map(serializeReview))
             })
             .catch(next)
     })
-    .post(requireAuth, jsonBodyParser, (req, res, next) => {
+    .post(jsonBodyParser, (req, res, next) => {
         const newReview = {...req.body, date_created: 'now()'}
 
         for (const [key, value] of Object.entries(newReview)) {
@@ -59,10 +59,10 @@ reviewRouter
             })
             .catch(next)
     })
-    .get(requireAuth, (req, res) => {
+    .get((req, res) => {
         res.json(serializeReview(res.review))
     })
-    .patch(requireAuth, jsonBodyParser, (req, res, next) => {
+    .patch(jsonBodyParser, (req, res, next) => {
         const updatedReview = {...req.body, date_created: 'now()'}
         for (const [key, value] of Object.entries(updatedReview)) {
             if (value == null)
