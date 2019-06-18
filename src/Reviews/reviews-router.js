@@ -40,6 +40,7 @@ reviewRouter
                 .then(newReview => {
                     res.json(newReview).status(201)
                 })
+                .catch(next)
     })
 
 reviewRouter
