@@ -9,10 +9,11 @@ const jsonBodyParser = express.json()
 
 const serializeReview = review => ({
     id: review.id,
+    bev_type: xss(review.bev_type),
     bev_name: xss(review.bev_name), 
     user_review: xss(review.user_review),
     rating: review.rating,
-    date_modified: review.date_modified,
+    date_created: review.date_created,
     bev_code: review.bev_code || {},
     user_id: review.user_id || {}
 })
@@ -34,13 +35,13 @@ reviewRouter
                 return res.status(400).json({
                 error: `Missing '${key}' in request body`
                 })
-        }
-        return ReviewsService
+            ReviewsService
             .insertReview(req.app.get('db'), newReview)
                 .then(newReview => {
                     res.json(newReview).status(201)
                 })
                 .catch(next)
+        }
     })
 
 reviewRouter
