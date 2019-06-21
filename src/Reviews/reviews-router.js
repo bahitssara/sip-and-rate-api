@@ -27,7 +27,7 @@ reviewRouter
             })
             .catch(next)
     })
-    .post(jsonBodyParser, (req, res, next) => {
+    .post(requireAuth, jsonBodyParser, (req, res, next) => {
         const newReview = {...req.body, date_created: 'now()'}
 
         for (const [key, value] of Object.entries(newReview)) {
@@ -38,7 +38,7 @@ reviewRouter
             return ReviewsService
             .insertReview(req.app.get('db'), newReview)
                 .then(newReview => {
-                    res.json(newReview).status(201)
+                    res.json(newReview).status(201).location(`/reviews/${newReview.id}`)
                 })
                 .catch(next)
         }

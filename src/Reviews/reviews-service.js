@@ -1,6 +1,17 @@
 const ReviewsService = {
     getAllReviews(knex) {
-        return knex.select('*').from('sip_rate_reviews')
+        return knex
+            .select(
+                'reviews.id',
+                'reviews.bev_type',
+                'reviews.bev_name',
+                'reviews.rating',
+                'reviews.date_created',
+                'reviews.bev_id',
+                'reviews.user_id'
+            )
+            .from('sip_rate_reviews')
+            .join('users', {'users.id': 'reviews.user_id'})
     },
     insertReview(db, newReview) {
         return db
@@ -14,8 +25,12 @@ const ReviewsService = {
           .where({ id })
           .delete()
     },
-    getById(knex, id) {
-        return knex.from('sip_rate_reviews').select('*').where('id', id).first()
+    getById(db, id) {
+        return db
+            .from('sip_rate_reviews')
+            .select('*')
+            .where('id', id)
+            .first()
     },
     updateReview(knex, id, newReviewFields) {
         return knex('sip_rate_reviews')
