@@ -2,16 +2,16 @@ const ReviewsService = {
     getAllReviews(knex) {
         return knex
             .select(
-                'reviews.id',
-                'reviews.bev_type',
-                'reviews.bev_name',
-                'reviews.rating',
-                'reviews.date_created',
-                'reviews.bev_id',
-                'reviews.user_id'
+                'sip_rate_reviews.id',
+                'sip_rate_reviews.bev_type',
+                'sip_rate_reviews.bev_name',
+                'sip_rate_reviews.rating',
+                'sip_rate_reviews.date_created',
+                'sip_rate_reviews.bev_id',
+                'sip_rate_reviews.user_id'
             )
             .from('sip_rate_reviews')
-            .join('users', {'users.id': 'reviews.user_id'})
+            .join('sip_rate_users', {'sip_rate_users.id': 'sip_rate_reviews.user_id'})
     },
     insertReview(db, newReview) {
         return db
