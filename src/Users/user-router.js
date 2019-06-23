@@ -40,7 +40,7 @@ usersRouter
         if (passwordError) {
             return res.status(400).json({ error: passwordError })
         }
-        return UsersService.hashPassword(password) 
+        return UsersService.hashPassword(password)
             .then(hashedPassword => {
                 const newUser = {
                     first_name,
@@ -48,7 +48,7 @@ usersRouter
                     email,
                     password: hashedPassword,
                 }
-                
+
                 return UsersService
                     .insertUser(req.app.get('db'), newUser)
                     .then(user => {
@@ -58,7 +58,7 @@ usersRouter
                             .json(serializeUser(user))
                     })
                     .catch(next)
-        })
+            })
     })
 
 

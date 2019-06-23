@@ -9,7 +9,6 @@ function makeUsersArray() {
       last_name: 'User',
       email: 'testemail1@email.com',
       password: 'password1',
-      user_name: 'test-user-1',
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
@@ -18,7 +17,6 @@ function makeUsersArray() {
       last_name: 'User',
       email: 'testemail2@email.com',
       password: 'password2',
-      user_name: 'test-user-2',
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
@@ -27,7 +25,6 @@ function makeUsersArray() {
       last_name: 'User',
       email: 'testemail3@email.com',
       password: 'password3',
-      user_name: 'test-user-3',
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
@@ -36,7 +33,6 @@ function makeUsersArray() {
       last_name: 'User',
       email: 'testemail4@email.com',
       password: 'password4',
-      user_name: 'test-user-4',
       date_created: '2029-01-22T16:28:32.615Z',
     },
   ]
@@ -84,7 +80,7 @@ function makeReviewsArray() {
     {
       id: 1,
       bev_type: 'test type',
-      bev_name:'test name',
+      bev_name: 'test name',
       user_review: 'First test review!',
       rating: 2,
       bev_id: 'apothicdark20124',
@@ -94,7 +90,7 @@ function makeReviewsArray() {
     {
       id: 2,
       bev_type: 'test type',
-      bev_name:'test name',
+      bev_name: 'test name',
       user_review: 'Second test review!',
       rating: 3,
       bev_id: 'apothicdark20121',
@@ -104,7 +100,7 @@ function makeReviewsArray() {
     {
       id: 3,
       bev_type: 'test type',
-      bev_name:'test name',
+      bev_name: 'test name',
       user_review: 'Third test review!',
       rating: 1,
       bev_id: 'apothicdark20122',
@@ -114,7 +110,7 @@ function makeReviewsArray() {
     {
       id: 4,
       bev_type: 'test type',
-      bev_name:'test name',
+      bev_name: 'test name',
       user_review: 'Fourth test review!',
       rating: 5,
       bev_id: 'apothicdark20123',
@@ -142,18 +138,17 @@ function makeExpectedBeverageReviews(users, bevId, reviews) {
   return expectedReviews.map(review => {
     const reviewUser = users.find(user => user.id === review.user_id)
     return {
-        id: beverage.id,
-        bev_type: beverage.bev_type,
-        bev_name: beverage.bev_name,
-        user_review: beverage.user_review,
-        date_created: beverage.date_created,
-        bev_code: beverage.bev_code,
+      id: beverage.id,
+      bev_type: beverage.bev_type,
+      bev_name: beverage.bev_name,
+      user_review: beverage.user_review,
+      date_created: beverage.date_created,
+      bev_code: beverage.bev_code,
       user: {
         id: reviewUser.id,
         first_name: reviewUser.first_name,
         last_name: reviewUser.last_name,
         email: reviewUser.email,
-        user_name: reviewUser.user_name,
         date_created: reviewUser.date_created,
       }
     }
@@ -192,18 +187,18 @@ function seedUsers(db, users) {
     )
 }
 
-function seedBeveragesTables(db, beverages, users, reviews=[]) {
+function seedBeveragesTables(db, beverages, users, reviews = []) {
   return db.transaction(async trx => {
     // await seedUsers(trx, users)   
     await trx.into('sip_rate_beverages').insert(beverages)
     await trx.raw(
-       `SELECT setval('sip_rate_beverages_id_seq', ?)`,
-       [beverages[beverages.length - 1].id],
-     )   
+      `SELECT setval('sip_rate_beverages_id_seq', ?)`,
+      [beverages[beverages.length - 1].id],
+    )
   })
 
 }
-  
+
 
 module.exports = {
   makeUsersArray,
