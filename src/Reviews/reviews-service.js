@@ -5,6 +5,7 @@ const ReviewsService = {
                 'sip_rate_reviews.id',
                 'sip_rate_reviews.bev_type',
                 'sip_rate_reviews.bev_name',
+                'sip_rate_reviews.user_review',
                 'sip_rate_reviews.rating',
                 'sip_rate_reviews.date_created',
                 'sip_rate_reviews.bev_id',

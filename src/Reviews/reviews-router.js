@@ -41,7 +41,6 @@ reviewRouter
                         res
                             .status(201)
                             .json(newReview)
-                            .location(`/reviews/${newReview.id}`)
                     })
                     .catch(next)
     })
