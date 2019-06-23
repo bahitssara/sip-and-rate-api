@@ -49,28 +49,32 @@ function makeBeveragesArray() {
       bev_type: 'Bev Type 1',
       bev_name: 'Test Bev 1',
       description: 'Test description 1',
-      overall_rating: 1
+      overall_rating: 1,
+      bev_code: 'apothic-dark-2012-4'
     },
     {
       id: 2,
       bev_type: 'Bev Type 2',
       bev_name: 'Test Bev 2',
       description: 'Test description 2',
-      overall_rating: 2
+      overall_rating: 2,
+      bev_code: 'apothic-dark-2012-1'
     },
     {
       id: 3,
       bev_type: 'Bev Type 3',
       bev_name: 'Test Bev 3',
       description: 'Test description 3',
-      overall_rating: 3
+      overall_rating: 3,
+      bev_code: 'apothic-dark-2012-2'
     },
     {
       id: 4,
       bev_type: 'Bev Type 4',
       bev_name: 'Test Bev 4',
       description: 'Test description 4',
-      overall_rating: 4
+      overall_rating: 4,
+      bev_code: 'apothic-dark-2012-3'
     },
   ];
 }
@@ -125,9 +129,10 @@ function makeExpectedBeverage(beverage) {
     id: beverage.id,
     bev_type: beverage.bev_type,
     bev_name: beverage.bev_name,
-    user_review: beverage.user_review,
+    description: beverage.user_review,
     date_created: beverage.date_created,
-    overall_rating: beverage.overall_rating
+    overall_rating: beverage.overall_rating,
+    bev_code: beverage.bev_code
   }
 }
 

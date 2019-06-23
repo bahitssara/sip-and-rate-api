@@ -68,16 +68,16 @@ describe('Beverages Endpoints', function() {
       })
     })
 
-      // it('responds with 200 and the specified beverage', () => {
-      //   const bevId = 2
-      //   const testBeverages = helpers.makeBeveragesArray()
-      //   const expectedBeverage = helpers.makeExpectedBeverage(
-      //     testBeverages[bevId - 1])
-      //   console.log(expectedBeverage)
-      //   return supertest(app)
-      //     .get(`/beverages/${bevId}`)
-      //     .expect(200, expectedBeverage)
-      // })
+  // NEED TO GET THIS WORKING NOT SURE WHY IT THROWS ERROR
+  //     it('responds with 200 and the specified beverage', () => {
+  //       const bevId = 2
+  //       const testBeverages = helpers.makeBeveragesArray()
+  //       const expectedBeverage = helpers.makeExpectedBeverage(
+  //         testBeverages[bevId - 1])
+  //       return supertest(app)
+  //         .get(`/beverages/${bevId}`)
+  //         .expect(200, expectedBeverage)
+  //     })
     })
   })
 
@@ -91,33 +91,35 @@ describe('Beverages Endpoints', function() {
       })
     })
 
-    //  it(`creates a beverage responding with 201 and the new beverage`, () =>{
-    //    const newBeverage = {
-    //       id: 1,
-    //       bev_type: 'Bev Type 1',
-    //       bev_name: 'Test Bev 1',
-    //       description: 'Test description 1',
-    //       overall_rating: 1
-    //    }
+     it(`creates a beverage responding with 201 and the new beverage`, () =>{
+       const newBeverage = {
+          id: 1,
+          bev_type: 'Bev Type 1',
+          bev_name: 'Test Bev 1',
+          description: 'Test description 1',
+          overall_rating: 1,
+          bev_code: 'apothic123'
+       }
 
-    //    return supertest(app)
-    //     .post('/beverages')
-    //     .send(newBeverage)
-    //     .expect(201)
-    //     .expect(res => {
-    //       expect(res.body.bev_type).to.eql(newBeverage.bev_type)
-    //       expect(res.body.bev_name).to.eql(newBeverage.bev_name)
-    //       expect(res.body.user_review).to.eql(newBeverage.user_review)
-    //       expect(res.body.rating).to.eql(newBeverage.rating)
-    //       expect(res.body).to.have.property('id')
-    //       expect(res.headers.location).to.eql(`/beverages/${res.body.id}`)
-    //     })
-    //     .then(res =>
-    //       supertest(app)
-    //         .get(`/beverages/${res.body.id}`)
-    //         .expect(res.body)
-    //     )
-    //  })
+       return supertest(app)
+        .post('/beverages')
+        .send(newBeverage)
+        .expect(201)
+        .expect(res => {
+          expect(res.body.bev_type).to.eql(newBeverage.bev_type)
+          expect(res.body.bev_name).to.eql(newBeverage.bev_name)
+          expect(res.body.description).to.eql(newBeverage.description)
+          expect(res.body.overall_rating).to.eql(newBeverage.overall_rating)
+          expect(res.body.bev_code).to.eql(newBeverage.bev_code)
+          expect(res.body).to.have.property('id')
+          expect(res.headers.location).to.eql(`/beverages/${res.body.id}`)
+        })
+        .then(res =>
+          supertest(app)
+            .get(`/beverages/${res.body.id}`)
+            .expect(res.body)
+        )
+     })
 
    })
 })

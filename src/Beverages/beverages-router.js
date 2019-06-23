@@ -37,7 +37,7 @@ beveragesRouter
                 .then(newBeverage => {
                     res
                     .status(201)
-                    .location(`/beverages/${beverage.id}`)
+                    .location(`/beverages/${newBeverage.id}`)
                     .json(newBeverage)
                 })
                 .catch(next)
