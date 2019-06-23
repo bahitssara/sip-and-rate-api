@@ -2,7 +2,6 @@ const express = require('express')
 const ReviewsService = require('./reviews-service')
 const xss = require('xss')
 const logger = require('../logger')
-const { requireAuth } = require('../middleware/jwt-auth')
 
 const reviewRouter = express.Router()
 const jsonBodyParser = express.json()
@@ -27,21 +26,24 @@ reviewRouter
             })
             .catch(next)
     })
-    .post(requireAuth, jsonBodyParser, (req, res, next) => {
+    .post(jsonBodyParser, (req, res, next) => {
         const newReview = {...req.body, date_created: 'now()'}
 
-        for (const [key, value] of Object.entries(newReview)) {
+        for (const [key, value] of Object.entries(newReview)) 
             if (value == null)
                 return res.status(400).json({
                 error: `Missing '${key}' in request body`
                 })
-            return ReviewsService
+        
+        ReviewsService
             .insertReview(req.app.get('db'), newReview)
                 .then(newReview => {
-                    res.json(newReview).status(201).location(`/reviews/${newReview.id}`)
+                    res
+                        .status(201)
+                        .json(newReview)
+                        .location(`/reviews/${newReview.id}`)
                 })
                 .catch(next)
-        }
     })
 
 reviewRouter

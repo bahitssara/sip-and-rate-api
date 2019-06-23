@@ -36,7 +36,9 @@ const ReviewsService = {
         return knex('sip_rate_reviews')
             .where({ id })
             .update(newReviewFields)
-    }
+    },
 }
+    
+
 
 module.exports = ReviewsService

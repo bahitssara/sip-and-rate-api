@@ -1,7 +1,10 @@
-// const bcrypt = require('bcryptjs')
 const AuthService = require('../Auth/auth-service')
 
 function requireAuth(req, res, next) {
+  console.log('requireAuth')
+  console.log(req.get('Authorization'))
+  next()
+
     const authToken = req.get('Authorization') || ''
 
     let basicToken
