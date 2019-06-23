@@ -35,15 +35,15 @@ reviewRouter
                 error: `Missing '${key}' in request body`
                 })
         
-        ReviewsService
-            .insertReview(req.app.get('db'), newReview)
-                .then(newReview => {
-                    res
-                        .status(201)
-                        .json(newReview)
-                        .location(`/reviews/${newReview.id}`)
-                })
-                .catch(next)
+            return ReviewsService
+                .insertReview(req.app.get('db'), newReview)
+                    .then(newReview => {
+                        res
+                            .status(201)
+                            .json(newReview)
+                            .location(`/reviews/${newReview.id}`)
+                    })
+                    .catch(next)
     })
 
 reviewRouter
