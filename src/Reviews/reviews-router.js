@@ -28,7 +28,6 @@ reviewRouter
     })
     .post(jsonBodyParser, (req, res, next) => {
         const newReview = { ...req.body, date_created: 'now()' }
-        newReview.user_id = req.users.id
         for (const [key, value] of Object.entries(newReview))
             if (value == null)
                 return res.status(400).json({
@@ -40,6 +39,7 @@ reviewRouter
             .then(newReview => {
                 res
                     .status(201)
+                    .location(`/reviews/${newReview.id}`)
                     .json(newReview)
             })
             .catch(next)

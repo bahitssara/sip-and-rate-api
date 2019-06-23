@@ -32,6 +32,7 @@ describe('Beverages Endpoints', function() {
 
     context('Given there are beverages in the database', () => {
         const testBeverages = helpers.makeBeveragesArray()
+        const testUsers = helpers.makeUsersArray()
         beforeEach('insert beverages', () => {
             return db
                 .into('sip_rate_beverages')
