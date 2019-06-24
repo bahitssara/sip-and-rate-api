@@ -8,6 +8,11 @@ describe('Reviews Endpoints', function() {
   const testUsers = helpers.makeUsersArray()
   const testBeverages = helpers.makeBeveragesArray()
 
+  function makeAuthHeader(user) {
+     const token = Buffer.from(`${user.email}:${user.password}`).toString('base64')
+       return `Basic ${token}`
+  }
+
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
@@ -60,6 +65,7 @@ describe('Reviews Endpoints', function() {
         const reviewId = 123456;
         return supertest(app)
           .get(`/reviews/${reviewId}`)
+          .set('Authorization', makeAuthHeader(testUsers[0]))
           .expect(404, {error: {message: `Review doesn't exist`} })
       })
     })
@@ -87,6 +93,7 @@ describe('Reviews Endpoints', function() {
         const expectedReview = testReview[reviewId -1];
         return supertest(app)
           .get(`/reviews/${reviewId}`)
+          .set('Authorization', makeAuthHeader(testUsers[0]))
           .expect(200, expectedReview)
       })
     })
@@ -98,11 +105,56 @@ describe('Reviews Endpoints', function() {
       beforeEach('insert reviews', () => {
           return db
               .into('sip_rate_reviews')
+              .set('Authorization', makeAuthHeader(testUsers[0]))
               .insert(testReviews)
       })
     })
 
+    it(`responds with 401 'Missing basic token when no basic token`, () => {
+      const newReview = 
+      {
+        id: 1,
+        bev_type: 'test type',
+        bev_name:'test name',
+        user_review: 'First test review!',
+        rating: 2,
+        bev_id: 'apothicdark20124',
+        user_id: 1,
+        date_created: '2029-01-22T16:28:32.615Z',
+      };
+      return supertest(app)
+        .post(`/reviews`)
+        .send(newReview)
+        .expect(401, { error: `Missing basic token` })
+      } 
+    )
+
+    it(`responds 401 'Unauthorized request' when no credentials in token`, () => {
+       const userNoCreds = { email: '', password: '' }
+         return supertest(app)
+          .post(`/reviews`)
+          .set('Authorization', makeAuthHeader(userNoCreds))
+          .expect(401, { error: `Unauthorized request` })
+    })
+
+    it(`responds 401 'Unauthorized request' when invalid user`, () => {
+      const userInvalidCreds = { email: 'user-not', password: 'existy' }
+      return supertest(app)
+        .post(`/reviews`)
+        .set('Authorization', makeAuthHeader(userInvalidCreds))
+        .expect(401, { error: `Unauthorized request` })
+    })
+
+    it(`responds 401 'Unauthorized request' when invalid password`, () => {
+      const userInvalidPass = { email: testUsers[0].email, password: 'wrong' }
+      return supertest(app)
+        .post(`/reviews`)
+        .set('Authorization', makeAuthHeader(userInvalidPass))
+        .expect(401, { error: `Unauthorized request` })
+    })
+
     it('creates a review, responding with 201 and a new review', () => {
+      const testUser = testUsers[0]
       const newReview = 
         {
           id: 1,
@@ -111,12 +163,12 @@ describe('Reviews Endpoints', function() {
           user_review: 'First test review!',
           rating: 2,
           bev_id: 'apothicdark20124',
-          user_id: 1,
           date_created: '2029-01-22T16:28:32.615Z',
-        };
+        }
       return supertest(app)
         .post('/reviews')
         .send(newReview)
+        .set('Authorization', makeAuthHeader(testUsers[0]))
         .expect(201)
         .expect(res => {
           expect(res.body.bev_type).to.eql(newReview.bev_type)
@@ -127,13 +179,25 @@ describe('Reviews Endpoints', function() {
           expect(res.body).to.have.property('id')
           expect(res.headers.location).to.eql(`/reviews/${res.body.id}`)
         })
-        .then(res =>
-          supertest(app)
-            .get(`/reviews/${res.body.id}`)
-            .expect(res.body)
-        )
-    })
+        .expect(res =>
+          db
+            .from('sip_rate_reviews')
+            .select('*')
+            .where({ id: res.body. id })
+            .first()
+            .then(row => {
+              expect(row.bev_type).to.eql(newReview.bev_type)
+              expect(row.bev_name).to.eql(newReview.bev_name)
+              expect(row.user_review).to.eql(newReview.user_review)
+              expect(row.rating).to.eql(newReview.rating)
+              expect(row.user_id).to.eql(testUser.id)
+              const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
+              const actualDate = new Date(row.date_created).toLocaleString()
+              expect(actualDate).to.eql(expectedDate)
+            })
+      )
   })
+})
 
   describe('DELETE /reviews/:reviewId', () => { 
     context('Given no reviews', () => {
@@ -141,6 +205,7 @@ describe('Reviews Endpoints', function() {
         const reviewId = 123456;
         return supertest(app)
           .delete(`/reviews/${reviewId}`)
+          .set('Authorization', makeAuthHeader(testUsers[0]))
           .expect(404, { error: { message: `Review doesn't exist`} })
       })
     })
@@ -159,6 +224,7 @@ describe('Reviews Endpoints', function() {
         return supertest(app)
           .delete(`/reviews/${reviewToDelete}`)
           .expect(204)
+          .set('Authorization', makeAuthHeader(testUsers[0]))
           .then(res =>
             supertest(app)
               .get('/reviews')
