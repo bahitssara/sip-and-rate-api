@@ -27,13 +27,14 @@ reviewRouter
             })
             .catch(next)
     })
-    .post(jsonBodyParser, (req, res, next) => {
+    .post(requireAuth, jsonBodyParser, (req, res, next) => {
         const newReview = { ...req.body, date_created: 'now()' }
         for (const [key, value] of Object.entries(newReview))
             if (value == null)
                 return res.status(400).json({
                     error: `Missing '${key}' in request body`
                 })
+                // newReview.user_id = req.user.id
 
         return ReviewsService
             .insertReview(req.app.get('db'), newReview)

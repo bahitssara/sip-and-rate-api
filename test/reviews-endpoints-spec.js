@@ -10,7 +10,7 @@ describe('Reviews Endpoints', function() {
 
   function makeAuthHeader(user) {
      const token = Buffer.from(`${user.email}:${user.password}`).toString('base64')
-       return `Basic ${token}`
+       return `basic ${token}`
   }
 
   before('make knex instance', () => {
@@ -163,6 +163,7 @@ describe('Reviews Endpoints', function() {
           user_review: 'First test review!',
           rating: 2,
           bev_id: 'apothicdark20124',
+          user_id: 1,
           date_created: '2029-01-22T16:28:32.615Z',
         }
       return supertest(app)
