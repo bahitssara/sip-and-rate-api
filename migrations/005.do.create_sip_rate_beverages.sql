@@ -28,7 +28,7 @@ CREATE TABLE sip_rate_reviews (
     rating INTEGER,
     date_created TIMESTAMP NOT NULL DEFAULT now(),
     bev_id INTEGER
-        REFERENCES sip_rate_beverages(id) ON DELETE CASCADE NOT NULL,
+        REFERENCES sip_rate_beverages(bev_code) ON DELETE CASCADE NOT NULL,
     user_id INTEGER
         REFERENCES sip_rate_users(id) ON DELETE CASCADE NOT NULL
 );
