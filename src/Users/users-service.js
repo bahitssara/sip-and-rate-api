@@ -49,7 +49,8 @@ const UsersService = {
         return knex('sip_rate_users')
             .where({ id })
             .update(newUserFields)
-    }
+    },
+    
 
 }
 
