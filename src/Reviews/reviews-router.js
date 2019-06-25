@@ -15,7 +15,7 @@ const serializeReview = review => ({
     rating: review.rating,
     date_created: review.date_created,
     bev_id: review.bev_id || {},
-    user_id: review.user_id || {}
+    user_id: review.user_id || {},
 })
 
 reviewRouter

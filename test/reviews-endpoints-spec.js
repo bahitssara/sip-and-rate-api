@@ -1,6 +1,7 @@
 const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
+const jwt = require('jsonwebtoken')
 
 describe('Reviews Endpoints', function() {
   let db
@@ -8,9 +9,12 @@ describe('Reviews Endpoints', function() {
   const testUsers = helpers.makeUsersArray()
   const testBeverages = helpers.makeBeveragesArray()
 
-  function makeAuthHeader(user) {
-     const token = Buffer.from(`${user.email}:${user.password}`).toString('base64')
-       return `basic ${token}`
+  function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+    const token = jwt.sign({ user_id: user.id }, secret, {
+      subject: user.email,
+      algorithm: 'HS256',
+    })
+    return `bearer ${token}`
   }
 
   before('make knex instance', () => {
@@ -110,7 +114,7 @@ describe('Reviews Endpoints', function() {
       })
     })
 
-    it(`responds with 401 'Missing basic token when no basic token`, () => {
+    it(`responds with 401 'Missing bearer token when no basic token`, () => {
       const newReview = 
       {
         id: 1,
@@ -125,7 +129,7 @@ describe('Reviews Endpoints', function() {
       return supertest(app)
         .post(`/reviews`)
         .send(newReview)
-        .expect(401, { error: `Missing basic token` })
+        .expect(401, { error: `Missing bearer token` })
       } 
     )
 
@@ -145,14 +149,6 @@ describe('Reviews Endpoints', function() {
         .expect(401, { error: `Unauthorized request` })
     })
 
-    it(`responds 401 'Unauthorized request' when invalid password`, () => {
-      const userInvalidPass = { email: testUsers[0].email, password: 'wrong' }
-      return supertest(app)
-        .post(`/reviews`)
-        .set('Authorization', makeAuthHeader(userInvalidPass))
-        .expect(401, { error: `Unauthorized request` })
-    })
-
     it('creates a review, responding with 201 and a new review', () => {
       const testUser = testUsers[0]
       const newReview = 
@@ -163,7 +159,6 @@ describe('Reviews Endpoints', function() {
           user_review: 'First test review!',
           rating: 2,
           bev_id: 'apothicdark20124',
-          user_id: 1,
           date_created: '2029-01-22T16:28:32.615Z',
         }
       return supertest(app)
