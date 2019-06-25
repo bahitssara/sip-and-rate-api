@@ -18,13 +18,17 @@ const AuthService = {
             algorithm: 'HS256',
         })
     },
-    verifyJwt(subject, token) {
+    verifyJwt(token) {
       return jwt.verify(token, config.JWT_SECRET, {
-        subject,
-        expiresIn: config.JWT_EXPIRY,
         algorithms: ['HS256'],
       })
     },
+    parseBasicToken(token) {
+        return Buffer
+          .from(token, 'base64')
+          .toString()
+          .split(':')
+      },
   }
   
   module.exports = AuthService

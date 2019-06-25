@@ -11,7 +11,7 @@ function requireAuth(req, res, next) {
   } else {
     basicToken = authToken.slice('basic '.length, authToken.length)
   }
-  const isAuthenticated = AuthService.verifyJwt(email, basicToken)
+  const isAuthenticated = AuthService.verifyJwt(basicToken)
 
   if (!isAuthenticated) {
     return res.status(401).json({ error: 'Unauthorized request' })
@@ -24,6 +24,7 @@ function requireAuth(req, res, next) {
       if (!user) {
         return res.status(401).json({ error: 'Unauthorized request' })
       }
+      req.user = user
       next()
     })
     .catch(next)
