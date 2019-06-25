@@ -25,17 +25,6 @@ const AuthService = {
         algorithms: ['HS256'],
       })
     },
-    parseBasicToken(token) {
-      //   return Buffer
-      //     .from(token, 'base64')
-      //     .toString()
-      //     .split(':')
-        let string = Buffer.from(token, 'base64').toString();
-        console.log(string);
-        let parts = string.split(':');
-        console.log(parts);
-        return parts;
-      },
   }
   
   module.exports = AuthService

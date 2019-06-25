@@ -315,3 +315,4 @@
 {"message":"Review with id 123456 doesn't exists","level":"info"}
 {"message":"Review with id 123456 doesn't exists","level":"info"}
 {"message":"Review with id 1 doesn't exist","level":"info"}
+{"message":"Beverage with 123456 doesn't exist","level":"info"}
