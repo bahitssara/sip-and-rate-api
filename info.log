@@ -325,3 +325,5 @@
 {"message":"Review with id 123456 doesn't exists","level":"info"}
 {"message":"Review with id 123456 doesn't exists","level":"info"}
 {"message":"Review with id 1 doesn't exist","level":"info"}
+{"message":"Review with id 5 doesn't exist","level":"info"}
+{"message":"Review with id 4 doesn't exist","level":"info"}

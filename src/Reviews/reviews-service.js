@@ -23,7 +23,7 @@ const ReviewsService = {
     }, 
     deleteReview(knex, id) {
         return knex('sip_rate_reviews')
-          .where({ id })
+          .where({id})
           .delete()
     },
     getById(db, id) {
@@ -35,7 +35,7 @@ const ReviewsService = {
     },
     updateReview(knex, id, newReviewFields) {
         return knex('sip_rate_reviews')
-            .where({ id })
+            .where(id)
             .update(newReviewFields)
     },
     getUserReviews(knex, userid) {
