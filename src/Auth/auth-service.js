@@ -28,6 +28,6 @@ const AuthService = {
           .toString()
           .split(':')
       },
-  }
+  } 
   
   module.exports = AuthService

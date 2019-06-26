@@ -38,6 +38,12 @@ const ReviewsService = {
             .where({ id })
             .update(newReviewFields)
     },
+    getUserReviews(knex, userid) {
+        return knex
+            .select('*')
+            .where('user_id', userid)
+            .from('sip_rate_reviews')
+    }
 }
     
 

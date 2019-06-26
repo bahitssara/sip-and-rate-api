@@ -101,5 +101,25 @@ reviewRouter
             .catch(next)
     })
 
+reviewRouter
+    .route('/myreviews/:userid')
+    .get((req, res, next) => {
+        const { userid } = req.params;
+        ReviewsService.getUserReviews(req.app.get('db'), userid)
+            .then(review => {
+                if (!review) {
+                    logger.info(`User with id ${userid} doesn't exists`);
+                    return res
+                        .status(409)
+                        .send({ error: { message: `User reviews don't exist` } })
+                }
+                res.status(200).json(review)
+            })
+            .catch(next)
+    })
+
+    
+
+
 module.exports = reviewRouter
 
