@@ -19,7 +19,7 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption))
 app.use(
     cors({
-        // origin: config.CLIENT_ORIGIN || 3000
+        origin: config.CLIENT_ORIGIN || 3000
     })
 );
 app.use(helmet())
