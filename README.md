@@ -1,5 +1,7 @@
 # Sip & Rate Server/API
 <a href="https://github.com/bahitssara/sip-and-rate-api/" target="_blank">Sip & Rate Client Repo</a><br>
+<a href="https://sip-and-rate.saraamayberry.now.sh/" target="_blank">Live App</a> 
+
 
 
 ## Summary

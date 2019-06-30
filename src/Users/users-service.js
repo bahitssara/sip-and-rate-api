@@ -21,9 +21,9 @@ const UsersService = {
         }
         return null
     },
-    hasUserWithUserName(db, user_name) {
+    hasUserWithEmail(db, email) {
         return db('sip_rate_users')
-            .where({ user_name })
+            .where({ email })
             .first()
             .then(user => !!user)
     },

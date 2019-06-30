@@ -40,6 +40,15 @@ usersRouter
         if (passwordError) {
             return res.status(400).json({ error: passwordError })
         }
+
+        UsersService.hasUserWithEmail(
+            req.app.get('db'),
+            email
+        )
+        .then(hasUserWithEmail => {
+            if(hasUserWithEmail)
+            return res.status(400).json({ error: `Email already in use, please sign in!` })
+        
         return UsersService.hashPassword(password)
             .then(hashedPassword => {
                 const newUser = {
@@ -57,8 +66,9 @@ usersRouter
                             .location(path.posix.join(req.originalUrl, `/${user.id}`))
                             .json(serializeUser(user))
                     })
-                    .catch(next)
             })
+        })
+        .catch(next)
     })
 
 
