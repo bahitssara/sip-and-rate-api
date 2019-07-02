@@ -2,7 +2,7 @@ const BeveragesService = {
     getAllBeverages(knex) {
         return knex.select('*').from('sip_rate_beverages')
     },
-    
+
     insertBeverages(db, newWine) {
         return db
             .insert(newWine)
@@ -14,8 +14,8 @@ const BeveragesService = {
     },
     deleteBeverages(knex, id) {
         return knex('sip_rate_beverages')
-          .where({ id })
-          .delete()
+            .where({ id })
+            .delete()
     },
     getById(knex, id) {
         return knex.from('sip_rate_beverages').select('*').where('id', id).first()

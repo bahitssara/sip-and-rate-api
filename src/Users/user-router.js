@@ -45,30 +45,30 @@ usersRouter
             req.app.get('db'),
             email
         )
-        .then(hasUserWithEmail => {
-            if(hasUserWithEmail)
-            return res.status(400).json({ error: `Email already in use, please sign in!` })
-        
-        return UsersService.hashPassword(password)
-            .then(hashedPassword => {
-                const newUser = {
-                    first_name,
-                    last_name,
-                    email,
-                    password: hashedPassword,
-                }
+            .then(hasUserWithEmail => {
+                if (hasUserWithEmail)
+                    return res.status(400).json({ error: `Email already in use, please sign in!` })
 
-                return UsersService
-                    .insertUser(req.app.get('db'), newUser)
-                    .then(user => {
-                        res
-                            .status(201)
-                            .location(path.posix.join(req.originalUrl, `/${user.id}`))
-                            .json(serializeUser(user))
+                return UsersService.hashPassword(password)
+                    .then(hashedPassword => {
+                        const newUser = {
+                            first_name,
+                            last_name,
+                            email,
+                            password: hashedPassword,
+                        }
+
+                        return UsersService
+                            .insertUser(req.app.get('db'), newUser)
+                            .then(user => {
+                                res
+                                    .status(201)
+                                    .location(path.posix.join(req.originalUrl, `/${user.id}`))
+                                    .json(serializeUser(user))
+                            })
                     })
             })
-        })
-        .catch(next)
+            .catch(next)
     })
 
 

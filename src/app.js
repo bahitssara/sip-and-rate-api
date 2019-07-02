@@ -13,8 +13,8 @@ const config = require('./config')
 const app = express()
 
 const morganOption = (NODE_ENV === 'production')
-  ? 'tiny'
-  : 'common';
+    ? 'tiny'
+    : 'common';
 
 app.use(morgan(morganOption))
 app.use(
@@ -29,14 +29,14 @@ app.use(reviewRouter)
 app.use(authRouter)
 app.use(beveragesRouter)
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.send('Hello, world!')
 })
 
 app.use(function errorHandler(error, req, res, next) {
     let response
-    if(NODE_ENV === 'production') {
-        response = { error: { message: 'server error'}}
+    if (NODE_ENV === 'production') {
+        response = { error: { message: 'server error' } }
     } else {
         console.error(error)
         response = { message: error.message, error }

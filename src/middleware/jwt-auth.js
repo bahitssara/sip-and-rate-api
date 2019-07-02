@@ -5,7 +5,7 @@ function requireAuth(req, res, next) {
 
   let bearerToken
   if (!authToken.toLowerCase().startsWith('bearer ')) {
-     res.status(401).json({ error: 'Missing bearer token' })
+    res.status(401).json({ error: 'Missing bearer token' })
   } else {
     return bearerToken = authToken.slice(7, authToken.length)
   }
@@ -14,7 +14,7 @@ function requireAuth(req, res, next) {
     AuthService.verifyJwt(bearerToken)
     next()
 
-  } catch(error) {
+  } catch (error) {
     res.status(401).json({ error: 'Unauthorized request' })
     return;
   }

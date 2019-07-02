@@ -50,7 +50,7 @@ const UsersService = {
             .where({ id })
             .update(newUserFields)
     },
-    
+
 
 }
 

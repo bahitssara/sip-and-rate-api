@@ -19,8 +19,8 @@ app.set('db', db)
 const getApiWines = (query) => {
     const emitter = new events.EventEmitter();
     const options = {
-        host:'api.snooth.com',
-        path: '/wines/?akey=kw6zioaksgw0uee40ixihfkucl02cdhcdo19s7b5q9vi9wv3&ip=66.28.234.115&q='+ query,
+        host: 'api.snooth.com',
+        path: '/wines/?akey=kw6zioaksgw0uee40ixihfkucl02cdhcdo19s7b5q9vi9wv3&ip=66.28.234.115&q=' + query,
         method: 'GET',
         headers: {
             'Authorization': "kw6zioaksgw0uee40ixihfkucl02cdhcdo19s7b5q9vi9wv3",
@@ -29,9 +29,9 @@ const getApiWines = (query) => {
         }
     };
 
-    https.get(options, (res) =>  {
+    https.get(options, (res) => {
         res.on('data', (chunk) => {
-                console.log(JSON.parse(chunk));
+            console.log(JSON.parse(chunk));
             emitter.emit('end', JSON.parse(chunk));
         });
 
@@ -49,19 +49,19 @@ app.get('/beverages-api-data/:search', (req, res) => {
 
     //get data on API call 
     wineSearch.on('end', (newWine) => {
-            console.log(newWine.wines);
+        console.log(newWine.wines);
         //connect to database
-            const dbSaveWine = [];
-            for(let i=0; i < newWine.wines.length; i++) {
-                dbSaveWine[i] = {
-                    bev_type: newWine.wines[i].type,
-                    bev_name: newWine.wines[i].name,
-                    description: newWine.wines[i].varietal,
-                    overall_rating: newWine.wines[i].snoothrank,
-                    bev_code: newWine.wines[i].code
-                }
+        const dbSaveWine = [];
+        for (let i = 0; i < newWine.wines.length; i++) {
+            dbSaveWine[i] = {
+                bev_type: newWine.wines[i].type,
+                bev_name: newWine.wines[i].name,
+                description: newWine.wines[i].varietal,
+                overall_rating: newWine.wines[i].snoothrank,
+                bev_code: newWine.wines[i].code
             }
-    BeveragesService.insertBeverages(req.app.get('db'), dbSaveWine)
+        }
+        BeveragesService.insertBeverages(req.app.get('db'), dbSaveWine)
             .then(newWine => {
                 console.log(newWine)
                 res.status(201).json(newWine)
@@ -69,10 +69,10 @@ app.get('/beverages-api-data/:search', (req, res) => {
             .catch(err => {
                 console.log(err);
             });
-            res.json(newWine.wines)
+        res.json(newWine.wines)
     });
 
-//error handling
+    //error handling
     wineSearch.on('error', (code) => {
         res.sendStatus(code)
     });

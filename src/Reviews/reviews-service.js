@@ -12,7 +12,7 @@ const ReviewsService = {
                 'sip_rate_reviews.user_id'
             )
             .from('sip_rate_reviews')
-            .join('sip_rate_users', {'sip_rate_users.id': 'sip_rate_reviews.user_id'})
+            .join('sip_rate_users', { 'sip_rate_users.id': 'sip_rate_reviews.user_id' })
     },
     insertReview(db, newReview) {
         return db
@@ -20,11 +20,11 @@ const ReviewsService = {
             .into('sip_rate_reviews')
             .returning('*')
             .then(([review]) => review)
-    }, 
+    },
     deleteReview(knex, id) {
         return knex('sip_rate_reviews')
-          .where({id})
-          .delete()
+            .where({ id })
+            .delete()
     },
     getById(db, id) {
         return db
@@ -45,7 +45,7 @@ const ReviewsService = {
             .from('sip_rate_reviews')
     }
 }
-    
+
 
 
 module.exports = ReviewsService
